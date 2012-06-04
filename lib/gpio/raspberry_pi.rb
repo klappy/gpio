@@ -1,7 +1,7 @@
 module GPIO
 	class RaspberryPi < Device
-		def initialize(mapping)
-			@mapping = mapping || :hardware
+		def initialize(mapping=:hardware)
+			@mapping = mapping
 			raise "mapping must either be :hardware or :software" unless [:hardware,:software].include? mapping
 			@hardware_pins = [3,5,7,8,10,11,12,13,15,16,17,19,21,22,23,24,26]
 			@software_pins = [0,1,4,14,15,17,18,21,22,23,24,10,9,25,11,8,7]

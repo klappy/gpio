@@ -1,3 +1,1 @@
-require './gpio/device'
-require './gpio/raspberry_pi.rb'
-require './gpio/pin.rb'
+%w[device raspberry_pi pin].each{|file| require File.dirname(__FILE__)+'/gpio/'+file}

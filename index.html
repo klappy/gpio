@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="gpio : a ruby gem and repository to contribute gpio code for devices such as Raspberry Pi to read sensors and control outputs." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>gpio</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/klappy/gpio">View on GitHub</a>
+
+          <h1 id="project_title">gpio</h1>
+          <h2 id="project_tagline">a ruby gem and repository to contribute gpio code for devices such as Raspberry Pi to read sensors and control outputs.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/klappy/gpio/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/klappy/gpio/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>description</h1>
+
+<h1></h1>
+
+<p>gpio allows for devices such as raspberry pi or systems with 1wire usb adapters to speak to the system's input/output pins.</p>
+
+<h1>installation</h1>
+
+<h1></h1>
+
+<h3>bundler</h3>
+
+<p>using bundler, add this to your Gemfile in the root of your app</p>
+
+<div class="highlight">
+<pre><span class="n">gem</span> <span class="s1">'gpio'</span>
+</pre>
+</div>
+
+
+<p>install bundler and then run bundle install</p>
+
+<div class="highlight">
+<pre>gem install bundler
+bundle install
+</pre>
+</div>
+
+
+<h3>gem install</h3>
+
+<p>from command line</p>
+
+<div class="highlight">
+<pre>gem install gpio
+</pre>
+</div>
+
+
+<p>require in your ruby file</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'gpio'</span>
+</pre>
+</div>
+
+
+<h1>example</h1>
+
+<h1></h1>
+
+<p>let's setup a motion sensor on GPIO pin 17 on a RaspberryPi (default).</p>
+
+<div class="highlight">
+<pre><span class="n">motion</span> <span class="o">=</span> <span class="no">GPIO</span><span class="o">::</span><span class="no">MotionDetector</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pin</span><span class="p">:</span> <span class="mi">17</span><span class="p">)</span>
+</pre>
+</div>
+
+
+<p>do we detect and motion yet?</p>
+
+<div class="highlight">
+<pre><span class="n">motion</span><span class="o">.</span><span class="n">detect</span>
+</pre>
+</div>
+
+
+<p>let's print a message corresponding to the motion.detect?</p>
+
+<div class="highlight">
+<pre><span class="nb">puts</span> <span class="n">motion</span><span class="o">.</span><span class="n">detect</span> <span class="p">?</span> <span class="s2">"Motion detected!"</span> <span class="p">:</span> <span class="s2">"No motion detected."</span>
+</pre>
+</div>
+
+
+<p>was the value any different than the last time it detected?</p>
+
+<div class="highlight">
+<pre><span class="n">motion</span><span class="o">.</span><span class="n">changed?</span>
+<span class="nb">puts</span> <span class="s2">"last: </span><span class="si">#{</span><span class="n">motion</span><span class="o">.</span><span class="n">last_reading</span><span class="si">}</span><span class="s2">, current: </span><span class="si">#{</span><span class="n">motion</span><span class="o">.</span><span class="n">reading</span><span class="si">}</span><span class="s2">"</span>
+</pre>
+</div>
+
+
+<p>wait until the value changes before we move on.</p>
+
+<div class="highlight">
+<pre><span class="k">until</span> <span class="n">motion</span><span class="o">.</span><span class="n">changed?</span> <span class="k">do</span>
+    <span class="n">motion</span><span class="o">.</span><span class="n">detect</span>
+    <span class="nb">sleep</span> <span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
+<span class="k">end</span>
+<span class="nb">puts</span> <span class="s2">"Something changed!"</span>
+<span class="nb">puts</span> <span class="s2">"last: </span><span class="si">#{</span><span class="n">motion</span><span class="o">.</span><span class="n">last_reading</span><span class="si">}</span><span class="s2">, current: </span><span class="si">#{</span><span class="n">motion</span><span class="o">.</span><span class="n">reading</span><span class="si">}</span><span class="s2">"</span>
+</pre>
+</div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">gpio maintained by <a href="https://github.com/klappy">klappy</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30885917-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>

@@ -1,2 +1,8 @@
+version 0.0.2
+- device/rasberrypi now modules instead of class
+- pin.new(params) now pass hash of params to pin.new {pin: 1, mode: :in, device: :RaspberryPi}
+- pin.new now has default if no device is passed in
+- lib files now load properly
+
 version 0.0.1: initial public release
 - proof of concept / prototype

@@ -1,17 +1,17 @@
 module GPIO
 	class Pin
-		attr_reader :hardware_pin, :software_pin, :pin, :direction, :device
-		def initialize(pin, direction, device)
-			@device = device
+		attr_reader :pin, :mode, :device, :hardware_pin, :software_pin
+		def initialize(params) #(pin, mode, device=:RaspberryPi)
+			@device = GPIO.const_get(params[:device]||:RaspberryPi)
 
+			@pin = params[:pin].to_int
 			@hardware_pin = device.hardware_pin(pin)
 			@software_pin = device.software_pin(pin)
-			@pin = device.mapping ? software : hardware
 
-			@direction = direction.to_s || get_direction
-			raise "Direction should be :in, :out." unless ['in','out'].include? @direction
+			@mode = params[:mode].to_s || device.get_direction
+			raise "Mode should be :in, :out, :bi, :pwm." unless ['in','out'].include? @mode
 
-			device.initialize_pin(software_pin, @direction)
+			device.initialize_pin(software_pin, @mode)
 		end
 
 		def on
@@ -23,7 +23,7 @@ module GPIO
 			read
 		end
 		def read
-			device.read(pin)
+			device.read(software_pin)
 		end
 	end
 end

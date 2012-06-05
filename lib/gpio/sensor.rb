@@ -3,7 +3,7 @@ module GPIO
 		def initialize(params)
 			@pin = Pin.new(:pin => params[:pin], :mode => :in, :device => params[:device])
 		end
-		def value
+		def read
 			@pin.read
 		end
 	end

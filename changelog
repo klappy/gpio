@@ -1,3 +1,10 @@
+version 0.0.3
+- updated readme with example
+- example usage code added
+- example sensor of motion_detector added
+- sensor class added
+- raspberry_pi module extends device module
+
 version 0.0.2
 - device/rasberrypi now modules instead of class
 - pin.new(params) now pass hash of params to pin.new {pin: 1, mode: :in, device: :RaspberryPi}

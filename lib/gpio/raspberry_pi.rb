@@ -16,7 +16,7 @@ module GPIO
 			'/sys/class/gpio/'
 		end
 		def self.pin_path(n)
-			"#{base_path}gpio#{n}/"
+			"#{base_path}#{pin_prefix}#{n}/"
 		end
 		def self.direction_path(n)
 			"#{pin_path(n)}direction"
@@ -30,13 +30,16 @@ module GPIO
 		def self.unexport_path
 			"#{base_path}unexport"
 		end
+		def self.pin_prefix
+			"gpio"
+		end
 
 		def self.get_pins(mapping=@mapping)
-			pins = `sudo ls #{base_path}`.scan(/(?:gpio)(\d+)/).flatten.map!(&:to_i)
+			pins = Dir.entries base_path.select!{|pin| pin[/(?:#{pin_prefix})(\d+)/]}.to_i
 			pins.map!{|pin| Pin.new(pin,nil,self).pin}
 		end
 		def self.get_direction(software_pin)
-			`cat #{direction_path(software_pin)}`.chomp
+			IO.read(direction_path(software_pin)).chomp!
 		end
 
 		def self.initialize_pin(software_pin, direction)
@@ -45,7 +48,7 @@ module GPIO
 		end
 
 		def self.exported?(software_pin)
-			`[ -d #{pin_path(software_pin)} ] && echo true || false`.chomp == 'true'
+			Dir.directory? pin_path(software_pin)
 		end
 		def self.export!(software_pin,direction)
 			`sudo bash -c "echo #{software_pin} > #{export_path}"`
@@ -58,11 +61,11 @@ module GPIO
 		end
 
 		def self.read(software_pin)
-			`cat #{value_path(software_pin)}`.chomp == '1'
+			IO.read(value_path(software_pin), 1) == '1'
 		end
 		def self.write(software_pin,value)
 			raise "This pin is an input." if get_direction(software_pin) == 'in'
-			`sudo bash -c "echo #{value} > #{value_path(software_pin)} && echo true || false"`.chomp == 'true'
+			`sudo bash -c "echo #{value} > #{value_path(software_pin)} && echo true || false"`.chomp! == 'true'
 		end
 	end
 end

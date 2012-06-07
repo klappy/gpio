@@ -36,7 +36,7 @@ module GPIO
 			pins.map!{|pin| Pin.new(pin,nil,self).pin}
 		end
 		def self.get_direction(software_pin)
-			`sudo cat #{direction_path(software_pin)}`.chomp
+			`cat #{direction_path(software_pin)}`.chomp
 		end
 
 		def self.initialize_pin(software_pin, direction)
@@ -45,7 +45,7 @@ module GPIO
 		end
 
 		def self.exported?(software_pin)
-			`sudo [ -d #{pin_path(software_pin)} ] && echo true || false`.chomp == 'true'
+			`[ -d #{pin_path(software_pin)} ] && echo true || false`.chomp == 'true'
 		end
 		def self.export!(software_pin,direction)
 			`sudo bash -c "echo #{software_pin} > #{export_path}"`
@@ -58,7 +58,7 @@ module GPIO
 		end
 
 		def self.read(software_pin)
-			`sudo cat #{value_path(software_pin)}`.chomp == '1'
+			`cat #{value_path(software_pin)}`.chomp == '1'
 		end
 		def self.write(software_pin,value)
 			raise "This pin is an input." if get_direction(software_pin) == 'in'

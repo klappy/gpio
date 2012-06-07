@@ -1,3 +1,14 @@
+version 0.0.4
+- major changes to reading/writing from/to gpio including checking permissions with hands free fallback to older sudo method
+- path_write method checks permissions and writes using IO.write for performance and falls back to shelling out to sudo echo
+- using IO.read and Dir.methods where possible for performance gains, added self.pin_prefix
+- raspberry_pi.rb => device.rb: moved methods that are now generic enough to be in device.
+- extracted paths to separate methods to allow for generic gpio methods to be moved to device and allow raspberr_pi.rb and other modules that extend device to be configuration.
+- removed sudo from reads, only needed for writes
+- print pin in error message raised
+- benchmarks added to see timings of different methods of reading/writing
+- found new methods of reading file that may be viable for microsecond intervals
+
 version 0.0.3
 - updated readme with example
 - example usage code added

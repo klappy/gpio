@@ -32,13 +32,13 @@ module GPIO
 			Dir.directory? pin_path(software_pin)
 		end
 		def export!(software_pin,direction)
-			`sudo bash -c "echo #{software_pin} > #{export_path}"`
-			`sudo bash -c "echo #{direction} > #{direction_path(software_pin)}"`
+			path_write export_path, software_pin
+			path_write direction_path(software_pin), direction
 			exported?(software_pin)
 		end
 		def unexport!(software_pin)
-			`sudo bash -c "echo #{software_pin} > #{unexport_path}"`
-			!exported?(software_pin)
+			path_write unexport_path, software_pin
+			!exported? software_pin
 		end
 
 		def read(software_pin)
@@ -46,8 +46,13 @@ module GPIO
 		end
 		def write(software_pin,value)
 			raise "This pin is an input." if get_direction(software_pin) == 'in'
-			`sudo bash -c "echo #{value} > #{value_path(software_pin)} && echo true || false"`.chomp! == 'true'
+			path_write value_path(software_pin), value
 		end
-
+		def path_write(path, value)
+			File::Stat.writable?(path) ? IO.write(path, value) : path_write_sudo(path, value)
+		end
+		def path_write_sudo(path, value)
+			`sudo bash -c "echo #{value} > #{path}"`.chomp!
+		end
 	end
 end

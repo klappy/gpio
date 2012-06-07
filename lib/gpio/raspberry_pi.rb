@@ -33,39 +33,5 @@ module GPIO
 		def self.pin_prefix
 			"gpio"
 		end
-
-		def self.get_pins(mapping=@mapping)
-			pins = Dir.entries base_path.select!{|pin| pin[/(?:#{pin_prefix})(\d+)/]}.to_i
-			pins.map!{|pin| Pin.new(pin,nil,self).pin}
-		end
-		def self.get_direction(software_pin)
-			IO.read(direction_path(software_pin)).chomp!
-		end
-
-		def self.initialize_pin(software_pin, direction)
-			unexport!(software_pin) if exported?(software_pin) && direction != get_direction(software_pin)
-			export!(software_pin, direction) unless exported?(software_pin)
-		end
-
-		def self.exported?(software_pin)
-			Dir.directory? pin_path(software_pin)
-		end
-		def self.export!(software_pin,direction)
-			`sudo bash -c "echo #{software_pin} > #{export_path}"`
-			`sudo bash -c "echo #{direction} > #{direction_path(software_pin)}"`
-			exported?(software_pin)
-		end
-		def self.unexport!(software_pin)
-			`sudo bash -c "echo #{software_pin} > #{unexport_path}"`
-			!exported?(software_pin)
-		end
-
-		def self.read(software_pin)
-			IO.read(value_path(software_pin), 1) == '1'
-		end
-		def self.write(software_pin,value)
-			raise "This pin is an input." if get_direction(software_pin) == 'in'
-			`sudo bash -c "echo #{value} > #{value_path(software_pin)} && echo true || false"`.chomp! == 'true'
-		end
 	end
 end

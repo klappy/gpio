@@ -14,5 +14,40 @@ module GPIO
 		def unexport_all!
 			load_pins.map(&unexport!)
 		end
+
+		def get_pins(mapping)
+			pins = Dir.entries base_path.select!{|pin| pin[/(?:#{pin_prefix})(\d+)/]}.to_i
+			pins.map!{|pin| Pin.new(pin,nil,self).pin}
+		end
+		def get_direction(software_pin)
+			IO.read(direction_path(software_pin)).chomp!
+		end
+
+		def initialize_pin(software_pin, direction)
+			unexport!(software_pin) if exported?(software_pin) && direction != get_direction(software_pin)
+			export!(software_pin, direction) unless exported?(software_pin)
+		end
+
+		def exported?(software_pin)
+			Dir.directory? pin_path(software_pin)
+		end
+		def export!(software_pin,direction)
+			`sudo bash -c "echo #{software_pin} > #{export_path}"`
+			`sudo bash -c "echo #{direction} > #{direction_path(software_pin)}"`
+			exported?(software_pin)
+		end
+		def unexport!(software_pin)
+			`sudo bash -c "echo #{software_pin} > #{unexport_path}"`
+			!exported?(software_pin)
+		end
+
+		def read(software_pin)
+			IO.read(value_path(software_pin), 1) == '1'
+		end
+		def write(software_pin,value)
+			raise "This pin is an input." if get_direction(software_pin) == 'in'
+			`sudo bash -c "echo #{value} > #{value_path(software_pin)} && echo true || false"`.chomp! == 'true'
+		end
+
 	end
 end

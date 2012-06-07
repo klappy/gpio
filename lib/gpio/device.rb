@@ -1,11 +1,11 @@
 module GPIO
 	module Device
 		def software_pin(pin)
-			raise "That software pin doesn't exist." unless software_pins.include? pin
+			raise "That software pin #{pin} doesn't exist." unless software_pins.include? pin
 			mapping == :software ? pin : software_pins[hardware_pins.index(pin)]
 		end
 		def hardware_pin(pin)
-			raise "That hardware pin doesn't exist." unless hardware_pins.include? pin
+			raise "That hardware pin #{pin} doesn't exist." unless hardware_pins.include? pin
 			mapping == :hardware ? pin : hardware_pins[software_pins.index(pin)]
 		end
 		def load_pins

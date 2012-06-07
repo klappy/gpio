@@ -29,7 +29,7 @@ module GPIO
 		end
 
 		def exported?(software_pin)
-			Dir.directory? pin_path(software_pin)
+			Dir.exists? pin_path(software_pin)
 		end
 		def export!(software_pin,direction)
 			`sudo bash -c "echo #{software_pin} > #{export_path}"`

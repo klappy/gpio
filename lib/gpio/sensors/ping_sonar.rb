@@ -7,10 +7,13 @@ module GPIO
 		end
 		def detect
 			@output.on; @output.off;
-			start = t.to_i+t.subsec.to_f
+			start_time = Time.now
+			start_subsec = start_time.to_i+start_time.subsec.to_f
 			@readings = []
-			until t.to_i+t.subsec.to_f - start > 0.001
+			until current_subsec - start_subsec > 0.001
 				@readings.push @input.read
+				current_time = Time.now
+				current_subsec = current_time.to_i+current_time.subsec.to_f
 			end
 			@readings
 		end

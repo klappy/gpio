@@ -6,9 +6,10 @@ module GPIO
 			super(params)
 		end
 		def detect
-			@output.on; @output.off;
-			start = Time.now.to_f
 			@readings = []
+			@output.on;
+			start = Time.now.to_f
+			@output.off;
 			until Time.now.to_f - start > 0.001
 				@readings.push @input.read
 			end

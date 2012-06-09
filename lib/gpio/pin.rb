@@ -1,6 +1,6 @@
 module GPIO
 	class Pin
-		attr_reader :pin, :mode, :device, :hardware_pin, :software_pin, :io
+		attr_reader :pin, :mode, :device, :hardware_pin, :software_pin, :file
 		def initialize(params) #(pin, mode, device=:RaspberryPi)
 			@device = GPIO.const_get(params[:device]||:RaspberryPi)
 
@@ -13,11 +13,11 @@ module GPIO
 
 			device.initialize_pin(software_pin, @mode)
 			@mode ||= get_direction
-			@io = @device.pin_io(pin, mode)
+			@file = @device.pin_file(pin, mode)
 		end
 
 		def read
-			io.rewind; io.getc
+			file.rewind; file.getc
 		end
 	end
 end

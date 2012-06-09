@@ -18,7 +18,7 @@ module GPIO
 		end
 
 		def read
-			file ? file.rewind and file.getc : device.read(software_pin)
+			file ? (file.rewind and file.getc) : device.read(software_pin)
 		end
 	end
 end

@@ -14,11 +14,11 @@ module GPIO
 
 			device.initialize_pin(software_pin, @mode)
 			@mode ||= get_direction
-			@file = @device.pin_file(software_pin, mode)
+			@file = @device.pin_file(software_pin, mode) rescue nil
 		end
 
 		def read
-			file.rewind; file.getc
+			file ? file.rewind and file.getc : device.read(software_pin)
 		end
 	end
 end

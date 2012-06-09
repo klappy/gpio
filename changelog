@@ -1,3 +1,11 @@
+version 0.0.6
+- new reading method IO.new and io.getc/rewind that gets into ~35 microsecond reads instead of ~350 microsecond reads with IO.read
+- typed input/output pins, mainly to prepare for pwm, bidirectional/1wire, and more
+- organized folders for devices/pins/sensors
+
+version 0.0.5
+- date bump
+
 version 0.0.4
 - major changes to reading/writing from/to gpio including checking permissions with hands free fallback to older sudo method
 - path_write method checks permissions and writes using IO.write for performance and falls back to shelling out to sudo echo

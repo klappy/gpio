@@ -14,7 +14,7 @@ module GPIO
 
 			device.initialize_pin(software_pin, @mode)
 			@mode ||= get_direction
-			@file = @device.pin_file(pin, mode)
+			@file = @device.pin_file(software_pin, mode)
 		end
 
 		def read

@@ -1,12 +1,12 @@
 module GPIO
 	module Device
 		def software_pin(pin)
-			raise "That software pin #{pin} doesn't exist." unless software_pins.include? pin
-			mapping == :software ? pin : software_pins[hardware_pins.index(pin)]
+			raise "That software pin #{pin} doesn't exist." unless self::SOFTWARE_PINS.include? pin
+			self::MAPPING == :software ? pin : self::SOFTWARE_PINS[self::HARDWARE_PINS.index(pin)]
 		end
 		def hardware_pin(pin)
-			raise "That hardware pin #{pin} doesn't exist." unless hardware_pins.include? pin
-			mapping == :hardware ? pin : hardware_pins[software_pins.index(pin)]
+			raise "That hardware pin #{pin} doesn't exist." unless self::HARDWARE_PINS.include? pin
+			self::MAPPING == :hardware ? pin : self::HARDWARE_PINS[self::SOFTWARE_PINS.index(pin)]
 		end
 		def load_pins
 			get_pins(:hardware).map{|pin| Pin.new(pin,get_direction(pin),self)}
@@ -16,7 +16,7 @@ module GPIO
 		end
 
 		def get_pins(mapping)
-			pins = Dir.entries base_path.select!{|pin| pin[/(?:#{pin_prefix})(\d+)/]}.to_i
+			pins = Dir.entries self::BASE_PATH.select!{|pin| pin[/(?:#{PIN_PREFIX})(\d+)/]}.to_i
 			pins.map!{|pin| Pin.new(pin,nil,self).pin}
 		end
 		def get_direction(software_pin)
@@ -29,16 +29,25 @@ module GPIO
 		end
 
 		def exported?(software_pin)
-			Dir.exists? pin_path(software_pin)
+			File.exists? pin_path(software_pin)
 		end
 		def export!(software_pin,direction)
-			path_write export_path, software_pin
+			path_write self::EXPORT_PATH, software_pin
 			path_write direction_path(software_pin), direction
 			exported?(software_pin)
 		end
 		def unexport!(software_pin)
-			path_write unexport_path, software_pin
+			path_write self::UNEXPORT_PATH, software_pin
 			!exported? software_pin
+		end
+
+		def pin_io(software_pin, mode)
+			m = case mode.to_s
+			when 'in'; 'r'
+			when 'out'; 'w'
+			when 'bi'; 'r+'
+			end
+			IO.new IO.sysopen(value_path(software_pin)), m
 		end
 
 		def read(software_pin)
@@ -49,10 +58,24 @@ module GPIO
 			path_write value_path(software_pin), value
 		end
 		def path_write(path, value)
-			File::Stat.writable?(path) ? IO.write(path, value) : path_write_sudo(path, value)
+			File::Stat.new(path).writable? ? IO.write(path, value) : path_write_sudo(path, value)
 		end
 		def path_write_sudo(path, value)
 			`sudo bash -c "echo #{value} > #{path}"`.chomp!
+		end
+
+		def pin_path(n)
+			"#{self::BASE_PATH}#{self::PIN_PREFIX}#{n}/"
+		end
+		def direction_path(n)
+			"#{pin_path(n)}#{self::DIRECTION_FILE}"
+		end
+		def value_path(n)
+			"#{pin_path(n)}#{self::VALUE_FILE}"
+		end
+
+		def valid?
+			IO.read(self::VALIDATE_FILE).chomp! == self::VALIDATE_VALUE
 		end
 	end
 end

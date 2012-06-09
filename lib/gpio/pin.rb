@@ -4,7 +4,8 @@ module GPIO
 		def initialize(params) #(pin, mode, device=:RaspberryPi)
 			@device = GPIO.const_get(params[:device]||:RaspberryPi)
 
-			@pin = params[:pin].to_int
+			@pin = params[:pin].to_i
+
 			@hardware_pin = device.hardware_pin(pin)
 			@software_pin = device.software_pin(pin)
 

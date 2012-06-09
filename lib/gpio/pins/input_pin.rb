@@ -2,7 +2,7 @@ module GPIO
 	class InputPin < Pin
 		attr_reader :last_reading, :reading
 		def initialize(params) #(pin, mode, device=:RaspberryPi)
-			params.merge!(:mode => :in)
+			params.merge! :mode => :in, :pin => params[:input_pin] || params[:pin]
 			super(params)
 		end
 

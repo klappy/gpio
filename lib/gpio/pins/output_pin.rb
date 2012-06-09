@@ -1,7 +1,7 @@
 module GPIO
 	class OutputPin < Pin
 		def initialize(params) #(pin, mode, device=:RaspberryPi)
-			params.merge!(:mode => :out)
+			params.merge! :mode => :out, :pin => params[:output_pin] || params[:pin]
 			super(params)
 		end
 

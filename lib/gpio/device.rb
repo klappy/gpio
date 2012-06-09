@@ -41,13 +41,13 @@ module GPIO
 			!exported? software_pin
 		end
 
-		def pin_io(software_pin, mode)
+		def pin_file(software_pin, mode)
 			m = case mode.to_s
 			when 'in'; 'r'
 			when 'out'; 'w'
 			when 'bi'; 'r+'
 			end
-			IO.new IO.sysopen(value_path(software_pin)), m
+			File.new value_path(software_pin), m
 		end
 
 		def read(software_pin)

@@ -1,15 +1,20 @@
 module GPIO
 	class Sensor
-		attr_reader :reading, :last_reading
+		attr_reader :pin
 		def initialize(params)
-			@pin = Pin.new(:pin => params[:pin], :mode => :in, :device => params[:device])
+			@pin = InputPin.new(:pin => params[:pin], :mode => :in, :device => params[:device])
 		end
 		def changed?
-			@last_reading != @reading
+			pin.changed?
 		end
 		def read
-			@last_reading = @reading
-			@reading = @pin.read
+			pin.read
+		end
+		def reading
+			pin.reading
+		end
+		def last_reading
+			pin.last_reading
 		end
 	end
 end

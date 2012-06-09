@@ -1,1 +1,7 @@
-Dir.glob("{gpio}/**/*").select{|f|f[/\.rb$/]}.each{|file| require File.dirname(__FILE__)+'/'+file}
+require 'device'
+require 'devices/raspberry_pi'
+require 'pin'
+require 'pins/input_pin'
+require 'pins/output_pin'
+require 'sensor'
+require 'sensors/motion_detector'

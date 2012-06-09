@@ -44,7 +44,7 @@ module GPIO
 		def pin_file(software_pin, mode)
 			m = case mode.to_s
 			when 'in'; 'r'
-			when 'out'; 'w'
+			when 'out'; 'w+'
 			when 'bi'; 'r+'
 			end
 			File.new value_path(software_pin), m

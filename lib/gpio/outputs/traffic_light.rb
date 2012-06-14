@@ -12,19 +12,19 @@ module GPIO
 			yellow.off
 			green.off
 			red.on
-			@state == :stop
+			@state = :stop
 		end
 		def warn
 			green.off
 			red.off
 			yellow.on
-			@state == :warn
+			@state = :warn
 		end
 		def go
 			red.off
 			yellow.off
 			green.on
-			@state == :go
+			@state = :go
 		end
 
 		def turn

@@ -8,11 +8,12 @@ module GPIO
 		def detect
 			@readings = []
 			@output.on;
-			start = Time.now.to_f
 			@output.off;
+			start = Time.now.to_f
 			until Time.now.to_f - start > 0.001
 				@readings.push @input.read
 			end
+			@detect_time = Time.now.to_f - start
 			@readings
 		end
 	end

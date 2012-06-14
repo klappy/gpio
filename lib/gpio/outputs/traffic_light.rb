@@ -48,10 +48,11 @@ module GPIO
 			green.off
 			@state = :power_outage
 		end
-		def all(state=:off)
-			red.send(state)
-			yellow.send(state)
-			green.send(state)
+		def all(new_state=:off)
+			red.send(new_state)
+			yellow.send(new_state)
+			green.send(new_state)
+			@state = new_state
 		end
 		def power_restore(iterations=1)
 			iterations.times do
@@ -59,8 +60,8 @@ module GPIO
 				sleep 1
 				all :off
 				sleep 1
-				@state = :power_restore
 			end
+			@state = :power_restore
 		end
 	end
 end

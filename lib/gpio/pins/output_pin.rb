@@ -13,7 +13,7 @@ module GPIO
 			device.write software_pin, 0
 			read
 		end
-		def pulse(duration)
+		def pulse(duration=0.1)
 			on
 			sleep duration
 			off

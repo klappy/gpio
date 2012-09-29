@@ -1,3 +1,6 @@
+version 0.0.7
+- new pin mapping for Revision 2 boards, see https://projects.drogon.net/raspberry-pi/wiringpi/pins/ and http://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/
+
 version 0.0.6
 - new reading method File.new and f.getc/rewind that gets into ~35 microsecond reads instead of ~55 microsecond IO.new io.getc/rewind and ~350 microsecond reads with IO.read
 - typed input/output pins, mainly to prepare for pwm, bidirectional/1wire, and more

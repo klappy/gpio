@@ -11,8 +11,8 @@ module GPIO
 		def off
 			pin.off
 		end
-		def blink(duration)
-			pulse(duration)
+		def blink(duration=nil)
+			pin.pulse(duration)
 		end
 		def state
 			pin.state
